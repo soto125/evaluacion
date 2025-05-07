@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model Company {
+  id          Int         @id @default(autoincrement())
+  name        String
+  industry    String
+  website     String
+  phone       String
+  address     String
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  status      Status
+  contacts    Contact[]
+  opportunities Opportunity[]
+}
+
+model Contact {
+  id          Int         @id @default(autoincrement())
+  companyId   Int
+  firstName   String
+  lastName    String
+  email       String
+  phone       String
+  position    String
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  status      Status
+  company     Company     @relation(fields: [companyId], references: [id])
+  activities  Activity[]
+}
+
+model Opportunity {
+  id              Int         @id @default(autoincrement())
+  companyId       Int
+  name            String
+  description     String
+  estimatedValue  Decimal
+  currency        Currency
+  stage           Stage
+  expectedCloseDate DateTime
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
+  company         Company     @relation(fields: [companyId], references: [id])
+  activities      Activity[]
+}
+
+model Activity {
+  id          Int         @id @default(autoincrement())
+  contactId   Int
+  opportunityId Int
+  type        ActivityType
+  subject     String
+  notes       String?
+  dueDate     DateTime
+  status      ActivityStatus
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  contact     Contact     @relation(fields: [contactId], references: [id])
+  opportunity Opportunity @relation(fields: [opportunityId], references: [id])
+}
+
+enum Status {
+  active
+  inactive
+}
+
+enum Currency {
+  USD
+  EUR
+  COP
+  MXN
+}
+
+enum Stage {
+  lead
+  qualified
+  proposal
+  negotiation
+  won
+  lost
+}
+
+enum ActivityType {
+  call
+  email
+  meeting
+  task
+}
+
+enum ActivityStatus {
+  pending
+  completed
+  cancelled
+}
+
+

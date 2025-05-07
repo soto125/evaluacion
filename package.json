@@ -1,0 +1,25 @@
+{
+  "name": "23042025",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "23042025": "file:",
+    "@prisma/client": "^6.6.0",
+    "@types/express": "^5.0.1",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "prisma": "^6.6.0",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
+  }
+}
